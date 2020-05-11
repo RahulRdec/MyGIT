@@ -1,0 +1,59 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dp="http://www.datapower.com/extensions" xmlns:func="http://exslt.org/functions" xmlns:dpfunc="http://www.datapower.com/extensions/functions" xmlns:dpconfig="http://www.datapower.com/param/config" xmlns:date="http://exslt.org/dates-and-times" xmlns:str="http://exslt.org/strings" xmlns:regexp="http://exslt.org/regular-expressions" xmlns:dyn="http://exslt.org/dynamic" extension-element-prefixes="dp func dpfunc dpconfig date str regexp dyn" exclude-result-prefixes="dp func dpfunc dpconfig date str regexp dyn">
+
+	<xsl:template match="/">
+
+		<xsl:variable name="createErrorReport">
+			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:man="http://www.datapower.com/schemas/management">
+				<soapenv:Header/>
+				<soapenv:Body>
+					<man:request domain="default">
+						<man:do-action>
+							<ErrorReport/>
+						</man:do-action>
+					</man:request>
+				</soapenv:Body>
+			</soapenv:Envelope>
+		</xsl:variable> 
+
+		<xsl:variable name="httpHeaders">
+			<header name="Content-Type">application/soap+xml</header>
+			<header name="Authorization">Basic T2ZmU2hvcmVfU2VjQmt1cDpMQGchbiRhZmU=</header>
+		</xsl:variable>
+
+
+		<!-- Calling SOMA and get the Response -->
+		<xsl:variable name="createErrorReportCore1" select="dp:soap-call('https://localhost:5550/service/mgmt/current',$createErrorReport/*,'ldap_ssl',0,'',$httpHeaders/*)"/>
+		<xsl:variable name="createErrorReportCore2" select="dp:soap-call('https://localhost2:5550/service/mgmt/current',$createErrorReport/*,'ldap_ssl',0,'',$httpHeaders/*)"/>
+		<xsl:variable name="createErrorReportCore3" select="dp:soap-call('https://localhost3:5550/service/mgmt/current',$createErrorReport/*,'ldap_ssl',0,'',$httpHeaders/*)"/>
+
+		<xsl:choose>
+			<xsl:when test="normalize-space($createErrorReportCore1/*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='response']/*[local-name()='result']/text())='OK'">
+				<xsl:text> Core 1 Error Report Generated Successfully. </xsl:text>
+				<xsl:text>&#10;</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text> Failed to generate Core 1 error report. Please try again or check logs. </xsl:text>
+				<xsl:text>&#10;</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:choose>
+			<xsl:when test="normalize-space($createErrorReportCore2/*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='response']/*[local-name()='result']/text())='OK'">
+				<xsl:text> Core 2 Error Report Generated Successfully. </xsl:text>
+				<xsl:text>&#10;</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text> Failed to generate Core 2 error report. Please try again or check logs. </xsl:text>
+				<xsl:text>&#10;</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:choose>
+			<xsl:when test="normalize-space($createErrorReportCore3/*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='response']/*[local-name()='result']/text())='OK'">
+				<xsl:text> Core 3 Error Report Generated Successfully. </xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text> Failed to generate Core 3 error report. Please try again or check logs. </xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+
+	</xsl:template> 
+</xsl:stylesheet>
