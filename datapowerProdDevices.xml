@@ -1,0 +1,12 @@
+<datapower>
+	<device>https://dpctctst01.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpelrstg01.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpctcstg02.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpvblkstg01.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpvblkstg02.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpelrprd01.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpctcprd02.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpctcprd03.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpvblkprd01.ghu.com:5550/service/mgmt/current</device>
+	<device>https://dpvblkprd02.ghu.com:5550/service/mgmt/current</device>
+</datapower>
